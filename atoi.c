@@ -12,12 +12,14 @@
 
 #include "push_swap.h"
 
+/* Return 1 if c is a whitespace character, else 0. */
 static int	is_space(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n'
 		|| c == '\r' || c == '\v' || c == '\f');
 }
 
+/* Advance s past any leading whitespace and return the new pointer. */
 static char	*skip_spaces(char *s)
 {
 	while (*s && is_space(*s))
@@ -25,6 +27,7 @@ static char	*skip_spaces(char *s)
 	return (s);
 }
 
+/* Read an optional sign character and set *sign to 1 or -1. */
 static void	read_sign(char **s, int *sign)
 {
 	*sign = 1;
@@ -36,6 +39,7 @@ static void	read_sign(char **s, int *sign)
 	}
 }
 
+/* Read decimal digits into *n, returning 0 on int overflow. */
 static int	read_digits(char **s, int sign, long *n)
 {
 	*n = 0;
@@ -49,6 +53,7 @@ static int	read_digits(char **s, int sign, long *n)
 	return (1);
 }
 
+/* Convert s to int with strict validation; return 0 on any error. */
 int	atoi_strict(char *s, int *out)
 {
 	long	n;

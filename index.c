@@ -12,6 +12,7 @@
 
 #include "push_swap.h"
 
+/* Sort arr in ascending order using selection sort. */
 static void	selection_sort(int *arr, int n)
 {
 	int	i;
@@ -37,39 +38,41 @@ static void	selection_sort(int *arr, int n)
 	}
 }
 
-static int	find_rank(int *arr, int n, int x)
+/* Return the index (rank) of val in the sorted arr. */
+static int	find_rank(int *arr, int n, int val)
 {
 	int	i;
 
 	i = 0;
 	while (i < n)
 	{
-		if (arr[i] == x)
+		if (arr[i] == val)
 			return (i);
 		i++;
 	}
 	return (0);
 }
 
-void	assign_indexes(t_stack *d)
+/* Replace each element of stack_a with its sorted rank (0 = smallest). */
+void	assign_indexes(t_stack *stk)
 {
 	int	*tmp;
 	int	i;
 
-	tmp = (int *)malloc(sizeof(int) * d->size_a);
+	tmp = (int *)malloc(sizeof(int) * stk->size_a);
 	if (!tmp)
-		print_error_and_exit(d);
+		print_error_and_exit(stk);
 	i = 0;
-	while (i < d->size_a)
+	while (i < stk->size_a)
 	{
-		tmp[i] = d->stack_a[i];
+		tmp[i] = stk->stack_a[i];
 		i++;
 	}
-	selection_sort(tmp, d->size_a);
+	selection_sort(tmp, stk->size_a);
 	i = 0;
-	while (i < d->size_a)
+	while (i < stk->size_a)
 	{
-		d->stack_a[i] = find_rank(tmp, d->size_a, d->stack_a[i]);
+		stk->stack_a[i] = find_rank(tmp, stk->size_a, stk->stack_a[i]);
 		i++;
 	}
 	free(tmp);

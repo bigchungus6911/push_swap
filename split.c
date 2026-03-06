@@ -12,29 +12,31 @@
 
 #include "push_swap.h"
 
-void	free_split(char **t)
+/* Free each string in words[] and then the array itself. */
+void	free_split(char **words)
 {
 	int	i;
 
-	if (!t)
+	if (!words)
 		return ;
 	i = 0;
-	while (t[i])
-		free(t[i++]);
-	free(t);
+	while (words[i])
+		free(words[i++]);
+	free(words);
 }
 
+/* Split s on whitespace, set *count, and return the array; NULL on error. */
 char	**split_ws(char *s, int *count)
 {
-	char	**t;
+	char	**words;
 
-	t = sp_alloc_split(s, count);
-	if (!t)
+	words = sp_alloc_split(s, count);
+	if (!words)
 		return (NULL);
-	if (!sp_fill_split(t, s))
+	if (!sp_fill_split(words, s))
 	{
-		free_split(t);
+		free_split(words);
 		return (NULL);
 	}
-	return (t);
+	return (words);
 }

@@ -12,12 +12,14 @@
 
 #include "push_swap.h"
 
+/* Return 1 if c is a whitespace character, else 0. */
 int	sp_is_space(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n'
 		|| c == '\r' || c == '\v' || c == '\f');
 }
 
+/* Count the number of whitespace-delimited words in s. */
 int	sp_count_words(char *s)
 {
 	int	i;
@@ -37,31 +39,34 @@ int	sp_count_words(char *s)
 	return (c);
 }
 
+/* Duplicate the substring s[start..end) into a newly allocated string. */
 char	*sp_dup_word(char *s, int start, int end)
 {
-	char	*t;
+	char	*word;
 	int		i;
 
-	t = (char *)malloc((end - start + 1) * sizeof(char));
-	if (!t)
+	word = (char *)malloc((end - start + 1) * sizeof(char));
+	if (!word)
 		return (NULL);
 	i = 0;
 	while (start < end)
-		t[i++] = s[start++];
-	t[i] = '\0';
-	return (t);
+		word[i++] = s[start++];
+	word[i] = '\0';
+	return (word);
 }
 
+/* Allocate a NULL-terminated array sized for the words in s. */
 char	**sp_alloc_split(char *s, int *count)
 {
-	char	**t;
+	char	**words;
 
 	*count = sp_count_words(s);
-	t = (char **)malloc(sizeof(char *) * (*count + 1));
-	return (t);
+	words = (char **)malloc(sizeof(char *) * (*count + 1));
+	return (words);
 }
 
-int	sp_fill_split(char **t, char *s)
+/* Fill words[] with duplicated word strings from s; return 0 on error. */
+int	sp_fill_split(char **words, char *s)
 {
 	int	i;
 	int	j;
@@ -78,11 +83,11 @@ int	sp_fill_split(char **t, char *s)
 		k = i;
 		while (s[i] && !sp_is_space(s[i]))
 			i++;
-		t[j] = sp_dup_word(s, k, i);
-		if (!t[j])
+		words[j] = sp_dup_word(s, k, i);
+		if (!words[j])
 			return (0);
 		j++;
 	}
-	t[j] = NULL;
+	words[j] = NULL;
 	return (1);
 }
