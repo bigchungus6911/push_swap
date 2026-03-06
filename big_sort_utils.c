@@ -12,44 +12,47 @@
 
 #include "push_swap.h"
 
-static int	find_pos(int *s, int n, int val)
+/* Return the index of val in arr[0..n-1], or -1 if not found. */
+static int	find_pos(int *arr, int n, int val)
 {
 	int	i;
 
 	i = 0;
 	while (i < n)
 	{
-		if (s[i] == val)
+		if (arr[i] == val)
 			return (i);
 		i++;
 	}
 	return (-1);
 }
 
-void	bs_rotate_b_to_max(t_stack *d)
+/* Rotate stack B (rb/rrb) until its current maximum element is on top. */
+void	bs_rotate_b_to_max(t_stack *stk)
 {
-	int	maxv;
+	int	max_idx;
 	int	pos;
 	int	rot_up;
 	int	rot_down;
 
-	maxv = d->size_b - 1;
-	pos = find_pos(d->stack_b, d->size_b, maxv);
-	rot_up = d->size_b - 1 - pos;
+	max_idx = stk->size_b - 1;
+	pos = find_pos(stk->stack_b, stk->size_b, max_idx);
+	rot_up = stk->size_b - 1 - pos;
 	rot_down = pos + 1;
 	if (rot_up <= rot_down)
 		while (rot_up-- > 0)
-			rb(d);
+			rb(stk);
 	else
 		while (rot_down-- > 0)
-			rrb(d);
+			rrb(stk);
 }
 
-void	bs_pull_back_to_a(t_stack *d)
+/* Repeatedly pull the max of B to the top and push it to A until B is empty. */
+void	bs_pull_back_to_a(t_stack *stk)
 {
-	while (d->size_b)
+	while (stk->size_b)
 	{
-		bs_rotate_b_to_max(d);
-		pa(d);
+		bs_rotate_b_to_max(stk);
+		pa(stk);
 	}
 }

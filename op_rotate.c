@@ -12,21 +12,24 @@
 
 #include "push_swap.h"
 
-void	ra(t_stack *d)
+/* Rotate stack A: top element goes to the bottom; print "ra". */
+void	ra(t_stack *stk)
 {
-	rotate_raw(d->stack_a, d->size_a);
+	rotate_raw(stk->stack_a, stk->size_a);
 	put_op("ra\n");
 }
 
-void	rb(t_stack *d)
+/* Rotate stack B: top element goes to the bottom; print "rb". */
+void	rb(t_stack *stk)
 {
-	rotate_raw(d->stack_b, d->size_b);
+	rotate_raw(stk->stack_b, stk->size_b);
 	put_op("rb\n");
 }
 
-void	rr(t_stack *d)
+/* Rotate both stacks simultaneously and print "rr". */
+void	rr(t_stack *stk)
 {
-	rotate_raw(d->stack_a, d->size_a);
-	rotate_raw(d->stack_b, d->size_b);
+	rotate_raw(stk->stack_a, stk->size_a);
+	rotate_raw(stk->stack_b, stk->size_b);
 	put_op("rr\n");
 }

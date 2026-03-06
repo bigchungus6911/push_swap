@@ -12,18 +12,20 @@
 
 #include "push_swap.h"
 
-void	pb(t_stack *d)
+/* Push the top of stack A onto stack B and print "pb". */
+void	pb(t_stack *stk)
 {
-	if (d->size_a == 0)
+	if (stk->size_a == 0)
 		return ;
-	d->stack_b[d->size_b++] = d->stack_a[--d->size_a];
+	stk->stack_b[stk->size_b++] = stk->stack_a[--stk->size_a];
 	put_op("pb\n");
 }
 
-void	pa(t_stack *d)
+/* Push the top of stack B onto stack A and print "pa". */
+void	pa(t_stack *stk)
 {
-	if (d->size_b == 0)
+	if (stk->size_b == 0)
 		return ;
-	d->stack_a[d->size_a++] = d->stack_b[--d->size_b];
+	stk->stack_a[stk->size_a++] = stk->stack_b[--stk->size_b];
 	put_op("pa\n");
 }
