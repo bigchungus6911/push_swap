@@ -5,67 +5,48 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hadrider <hadrider@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 14:55:11 by hadrider          #+#    #+#             */
-/*   Updated: 2026/02/23 14:55:12 by hadrider         ###   ########.fr       */
+/*   Created: 2026/03/04 14:45:25 by hadrider          #+#    #+#             */
+/*   Updated: 2026/03/04 14:45:26 by hadrider         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	swap_int(int *a, int *b)
-{
-	int	t;
-
-	t = *a;
-	*a = *b;
-	*b = t;
-}
-
-static void	quick_sort(int *arr, int l, int r)
+static void	selection_sort(int *arr, int n)
 {
 	int	i;
 	int	j;
-	int	p;
+	int	min;
+	int	tmp;
 
-	i = l;
-	j = r;
-	p = arr[(l + r) / 2];
-	while (i <= j)
+	i = 0;
+	while (i < n)
 	{
-		while (arr[i] < p)
-			i++;
-		while (arr[j] > p)
-			j--;
-		if (i <= j)
+		min = i;
+		j = i + 1;
+		while (j < n)
 		{
-			swap_int(&arr[i], &arr[j]);
-			i++;
-			j--;
+			if (arr[j] < arr[min])
+				min = j;
+			j++;
 		}
+		tmp = arr[i];
+		arr[i] = arr[min];
+		arr[min] = tmp;
+		i++;
 	}
-	if (l < j)
-		quick_sort(arr, l, j);
-	if (i < r)
-		quick_sort(arr, i, r);
 }
 
-static int	bin_find(int *arr, int n, int x)
+static int	find_rank(int *arr, int n, int x)
 {
-	int	l;
-	int	r;
-	int	m;
+	int	i;
 
-	l = 0;
-	r = n - 1;
-	while (l <= r)
+	i = 0;
+	while (i < n)
 	{
-		m = (l + r) / 2;
-		if (arr[m] == x)
-			return (m);
-		if (arr[m] < x)
-			l = m + 1;
-		else
-			r = m - 1;
+		if (arr[i] == x)
+			return (i);
+		i++;
 	}
 	return (0);
 }
@@ -84,11 +65,11 @@ void	assign_indexes(t_stack *d)
 		tmp[i] = d->stack_a[i];
 		i++;
 	}
-	quick_sort(tmp, 0, d->size_a - 1);
+	selection_sort(tmp, d->size_a);
 	i = 0;
 	while (i < d->size_a)
 	{
-		d->stack_a[i] = bin_find(tmp, d->size_a, d->stack_a[i]);
+		d->stack_a[i] = find_rank(tmp, d->size_a, d->stack_a[i]);
 		i++;
 	}
 	free(tmp);

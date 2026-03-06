@@ -6,7 +6,7 @@
 /*   By: hadrider <hadrider@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:55:25 by hadrider          #+#    #+#             */
-/*   Updated: 2026/03/02 08:21:33 by hadrider         ###   ########.fr       */
+/*   Updated: 2026/03/03 09:32:48 by hadrider         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,41 +50,49 @@ static void	load_stack_a(t_stack *d, int *v, int n)
 	}
 }
 
-static int	parse_one(char *arg, int **vals, int *n)
+static int	count_total(int argc, char **argv, int *total)
 {
-	char	**p;
 	int		i;
+	int		count;
+	char	**p;
 
-	p = split_ws(arg, n);
-	if (!p || *n == 0)
-		return (free_split(p), 0);
-	*vals = (int *)malloc(sizeof(int) * (*n));
-	if (!*vals)
-		return (free_split(p), 0);
-	i = 0;
-	while (i < *n)
+	i = 1;
+	*total = 0;
+	while (i < argc)
 	{
-		if (!atoi_strict(p[i], &(*vals)[i]))
-			return (free(*vals), free_split(p), 0);
+		p = split_ws(argv[i], &count);
+		if (!p || count == 0)
+			return (free_split(p), 0);
+		*total += count;
+		free_split(p);
 		i++;
 	}
-	free_split(p);
 	return (1);
 }
 
-static int	parse_many(int argc, char **argv, int **vals, int *n)
+static int	fill_values(int argc, char **argv, int *vals)
 {
-	int	i;
+	int		i;
+	int		j;
+	int		k;
+	int		count;
+	char	**p;
 
-	*n = argc - 1;
-	*vals = (int *)malloc(sizeof(int) * (*n));
-	if (!*vals)
-		return (0);
 	i = 1;
+	k = 0;
 	while (i < argc)
 	{
-		if (!atoi_strict(argv[i], &(*vals)[i - 1]))
-			return (free(*vals), 0);
+		p = split_ws(argv[i], &count);
+		if (!p)
+			return (0);
+		j = 0;
+		while (j < count)
+		{
+			if (!atoi_strict(p[j], &vals[k++]))
+				return (free_split(p), 0);
+			j++;
+		}
+		free_split(p);
 		i++;
 	}
 	return (1);
@@ -95,15 +103,13 @@ int	parse_input(t_stack *d, int argc, char **argv)
 	int	*vals;
 	int	n;
 
-	vals = NULL;
-	n = 0;
-	if (argc == 2)
-	{
-		if (!parse_one(argv[1], &vals, &n))
-			return (0);
-	}
-	else if (!parse_many(argc, argv, &vals, &n))
+	if (!count_total(argc, argv, &n) || n == 0)
 		return (0);
+	vals = malloc(sizeof(int) * n);
+	if (!vals)
+		return (0);
+	if (!fill_values(argc, argv, vals))
+		return (free(vals), 0);
 	if (has_dup(vals, n))
 		return (free(vals), 0);
 	load_stack_a(d, vals, n);
