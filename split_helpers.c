@@ -12,12 +12,14 @@
 
 #include "push_swap.h"
 
+/* Return 1 if c is a whitespace character, else 0. */
 int	sp_is_space(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n'
 		|| c == '\r' || c == '\v' || c == '\f');
 }
 
+/* Count the number of whitespace-separated words in s. */
 int	sp_count_words(char *s)
 {
 	int	i;
@@ -37,6 +39,7 @@ int	sp_count_words(char *s)
 	return (c);
 }
 
+/* Duplicate the substring s[start..end-1] into a new null-terminated string. */
 char	*sp_dup_word(char *s, int start, int end)
 {
 	char	*t;
@@ -52,6 +55,7 @@ char	*sp_dup_word(char *s, int start, int end)
 	return (t);
 }
 
+/* Allocate a NULL-terminated array sized for all words in s. */
 char	**sp_alloc_split(char *s, int *count)
 {
 	char	**t;
@@ -61,6 +65,7 @@ char	**sp_alloc_split(char *s, int *count)
 	return (t);
 }
 
+/* Fill the pre-allocated array t with words extracted from s. */
 int	sp_fill_split(char **t, char *s)
 {
 	int	i;

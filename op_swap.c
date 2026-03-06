@@ -12,21 +12,24 @@
 
 #include "push_swap.h"
 
-void	sa(t_stack *d)
+/* Swap the top two elements of stack A and print "sa". */
+void	sa(t_stack *stk)
 {
-	swap_raw(d->stack_a, d->size_a);
+	swap_raw(stk->stack_a, stk->size_a);
 	put_op("sa\n");
 }
 
-void	sb(t_stack *d)
+/* Swap the top two elements of stack B and print "sb". */
+void	sb(t_stack *stk)
 {
-	swap_raw(d->stack_b, d->size_b);
+	swap_raw(stk->stack_b, stk->size_b);
 	put_op("sb\n");
 }
 
-void	ss(t_stack *d)
+/* Swap the top two elements of both stacks and print "ss". */
+void	ss(t_stack *stk)
 {
-	swap_raw(d->stack_a, d->size_a);
-	swap_raw(d->stack_b, d->size_b);
+	swap_raw(stk->stack_a, stk->size_a);
+	swap_raw(stk->stack_b, stk->size_b);
 	put_op("ss\n");
 }

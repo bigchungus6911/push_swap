@@ -12,18 +12,19 @@
 
 #include "push_swap.h"
 
-static int	has_dup(int *v, int n)
+/* Return 1 if any two values in nums[0..total-1] are equal, else 0. */
+static int	has_dup(int *nums, int total)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < n)
+	while (i < total)
 	{
 		j = i + 1;
-		while (j < n)
+		while (j < total)
 		{
-			if (v[i] == v[j])
+			if (nums[i] == nums[j])
 				return (1);
 			j++;
 		}
@@ -32,87 +33,91 @@ static int	has_dup(int *v, int n)
 	return (0);
 }
 
-static void	load_stack_a(t_stack *d, int *v, int n)
+/* Allocate both stacks and load nums[0..total-1] into stack_a (top = nums[0]). */
+static void	load_stack_a(t_stack *stk, int *nums, int total)
 {
 	int	i;
 
-	d->stack_a = malloc(sizeof(int) * n);
-	d->stack_b = malloc(sizeof(int) * n);
-	if (!d->stack_a || !d->stack_b)
-		print_error_and_exit(d);
-	d->size_a = n;
-	d->size_b = 0;
+	stk->stack_a = malloc(sizeof(int) * total);
+	stk->stack_b = malloc(sizeof(int) * total);
+	if (!stk->stack_a || !stk->stack_b)
+		print_error_and_exit(stk);
+	stk->size_a = total;
+	stk->size_b = 0;
 	i = 0;
-	while (i < n)
+	while (i < total)
 	{
-		d->stack_a[n - 1 - i] = v[i];
+		stk->stack_a[total - 1 - i] = nums[i];
 		i++;
 	}
 }
 
+/* Count the total number of integer tokens across all argv strings. */
 static int	count_total(int argc, char **argv, int *total)
 {
 	int		i;
 	int		count;
-	char	**p;
+	char	**words;
 
 	i = 1;
 	*total = 0;
 	while (i < argc)
 	{
-		p = split_ws(argv[i], &count);
-		if (!p || count == 0)
-			return (free_split(p), 0);
+		words = split_ws(argv[i], &count);
+		if (!words || count == 0)
+			return (free_split(words), 0);
 		*total += count;
-		free_split(p);
+		free_split(words);
 		i++;
 	}
 	return (1);
 }
 
+/* Parse each argv string into integer tokens and store them in vals[]. */
 static int	fill_values(int argc, char **argv, int *vals)
 {
 	int		i;
 	int		j;
 	int		k;
 	int		count;
-	char	**p;
+	char	**words;
 
 	i = 1;
 	k = 0;
 	while (i < argc)
 	{
-		p = split_ws(argv[i], &count);
-		if (!p)
+		words = split_ws(argv[i], &count);
+		if (!words)
 			return (0);
 		j = 0;
 		while (j < count)
 		{
-			if (!atoi_strict(p[j], &vals[k++]))
-				return (free_split(p), 0);
+			if (!atoi_strict(words[j], &vals[k++]))
+				return (free_split(words), 0);
 			j++;
 		}
-		free_split(p);
+		free_split(words);
 		i++;
 	}
 	return (1);
 }
 
-int	parse_input(t_stack *d, int argc, char **argv)
+/* Parse all arguments: count tokens, validate, check duplicates, load stack. */
+int	parse_input(t_stack *stk, int argc, char **argv)
 {
 	int	*vals;
-	int	n;
+	int	total;
 
-	if (!count_total(argc, argv, &n) || n == 0)
+	if (!count_total(argc, argv, &total) || total == 0)
 		return (0);
-	vals = malloc(sizeof(int) * n);
+	vals = malloc(sizeof(int) * total);
 	if (!vals)
 		return (0);
 	if (!fill_values(argc, argv, vals))
 		return (free(vals), 0);
-	if (has_dup(vals, n))
+	if (has_dup(vals, total))
 		return (free(vals), 0);
-	load_stack_a(d, vals, n);
+	load_stack_a(stk, vals, total);
 	free(vals);
 	return (1);
 }

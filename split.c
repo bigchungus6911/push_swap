@@ -12,6 +12,7 @@
 
 #include "push_swap.h"
 
+/* Free a NULL-terminated array of strings and the array itself. */
 void	free_split(char **t)
 {
 	int	i;
@@ -24,6 +25,7 @@ void	free_split(char **t)
 	free(t);
 }
 
+/* Split s on whitespace: allocate the array, fill it, and return it. */
 char	**split_ws(char *s, int *count)
 {
 	char	**t;

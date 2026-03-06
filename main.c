@@ -12,26 +12,37 @@
 
 #include "push_swap.h"
 
+/*
+** push_swap: Sort a stack of integers using a limited set of operations.
+**
+** FLOW:
+** 1. Parse input arguments into stack_a
+** 2. Replace values with their sorted rank (0, 1, 2, ...)
+** 3. If <= 5 numbers: use simple sort (sort_3 + push min to B)
+** 4. If > 5 numbers: use chunk sort (push to B in ranges, pull back by max)
+*/
+
+/* Entry point: initialise the stack, parse, sort, and free. */
 int	main(int argc, char **argv)
 {
-	t_stack	d;
+	t_stack	stk;
 
-	d.stack_a = NULL;
-	d.stack_b = NULL;
-	d.size_a = 0;
-	d.size_b = 0;
+	stk.stack_a = NULL;
+	stk.stack_b = NULL;
+	stk.size_a = 0;
+	stk.size_b = 0;
 	if (argc < 2)
 		return (0);
-	if (!parse_input(&d, argc, argv))
-		print_error_and_exit(&d);
-	if (d.size_a <= 1 || is_sorted(&d))
-		return (free(d.stack_a), free(d.stack_b), 0);
-	assign_indexes(&d);
-	if (d.size_a <= 5)
-		sort_small(&d);
+	if (!parse_input(&stk, argc, argv))
+		print_error_and_exit(&stk);
+	if (stk.size_a <= 1 || is_sorted(&stk))
+		return (free(stk.stack_a), free(stk.stack_b), 0);
+	assign_indexes(&stk);
+	if (stk.size_a <= 5)
+		sort_small(&stk);
 	else
-		chunk_sort(&d);
-	free(d.stack_a);
-	free(d.stack_b);
+		chunk_sort(&stk);
+	free(stk.stack_a);
+	free(stk.stack_b);
 	return (0);
 }
