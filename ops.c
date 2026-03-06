@@ -12,53 +12,61 @@
 
 #include "push_swap.h"
 
+/* Write the operation name to stdout in a single syscall. */
 void	put_op(char *s)
 {
-	while (*s)
-		write(1, s++, 1);
+	int	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	write(1, s, len);
 }
 
-void	swap_raw(int *s, int n)
+/* Swap the top two elements of the array. */
+void	swap_raw(int *arr, int size)
 {
 	int	t;
 
-	if (n < 2)
+	if (size < 2)
 		return ;
-	t = s[n - 1];
-	s[n - 1] = s[n - 2];
-	s[n - 2] = t;
+	t = arr[size - 1];
+	arr[size - 1] = arr[size - 2];
+	arr[size - 2] = t;
 }
 
-void	rotate_raw(int *s, int n)
+/* Move the top element to the bottom (rotate up). */
+void	rotate_raw(int *arr, int size)
 {
 	int	i;
 	int	top;
 
-	if (n < 2)
+	if (size < 2)
 		return ;
-	top = s[n - 1];
-	i = n - 1;
+	top = arr[size - 1];
+	i = size - 1;
 	while (i > 0)
 	{
-		s[i] = s[i - 1];
+		arr[i] = arr[i - 1];
 		i--;
 	}
-	s[0] = top;
+	arr[0] = top;
 }
 
-void	rev_rotate_raw(int *s, int n)
+/* Move the bottom element to the top (reverse rotate). */
+void	rev_rotate_raw(int *arr, int size)
 {
 	int	i;
 	int	bot;
 
-	if (n < 2)
+	if (size < 2)
 		return ;
-	bot = s[0];
+	bot = arr[0];
 	i = 0;
-	while (i + 1 < n)
+	while (i + 1 < size)
 	{
-		s[i] = s[i + 1];
+		arr[i] = arr[i + 1];
 		i++;
 	}
-	s[n - 1] = bot;
+	arr[size - 1] = bot;
 }

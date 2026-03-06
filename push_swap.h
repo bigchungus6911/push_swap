@@ -24,45 +24,45 @@ typedef struct s_stack
 	int	size_b;
 }	t_stack;
 
-int		parse_input(t_stack *d, int argc, char **argv);
+int		parse_input(t_stack *stk, int argc, char **argv);
 
-void	print_error_and_exit(t_stack *d);
+void	print_error_and_exit(t_stack *stk);
 
 void	put_op(char *s);
-void	swap_raw(int *s, int n);
-void	rotate_raw(int *s, int n);
-void	rev_rotate_raw(int *s, int n);
-int		is_sorted(t_stack *d);
+void	swap_raw(int *arr, int size);
+void	rotate_raw(int *arr, int size);
+void	rev_rotate_raw(int *arr, int size);
+int		is_sorted(t_stack *stk);
 
 int		atoi_strict(char *s, int *out);
 char	**split_ws(char *s, int *count);
-void	free_split(char **t);
+void	free_split(char **words);
 int		sp_is_space(char c);
 int		sp_count_words(char *s);
 char	*sp_dup_word(char *s, int start, int end);
 char	**sp_alloc_split(char *s, int *count);
-int		sp_fill_split(char **t, char *s);
+int		sp_fill_split(char **words, char *s);
 
-void	sa(t_stack *d);
-void	sb(t_stack *d);
-void	ss(t_stack *d);
+void	sa(t_stack *stk);
+void	sb(t_stack *stk);
+void	ss(t_stack *stk);
 
-void	pa(t_stack *d);
-void	pb(t_stack *d);
+void	pa(t_stack *stk);
+void	pb(t_stack *stk);
 
-void	ra(t_stack *d);
-void	rb(t_stack *d);
-void	rr(t_stack *d);
+void	ra(t_stack *stk);
+void	rb(t_stack *stk);
+void	rr(t_stack *stk);
 
-void	rra(t_stack *d);
-void	rrb(t_stack *d);
-void	rrr(t_stack *d);
+void	rra(t_stack *stk);
+void	rrb(t_stack *stk);
+void	rrr(t_stack *stk);
 
-void	assign_indexes(t_stack *d);
-void	sort_small(t_stack *d);
-void	chunk_sort(t_stack *d);
+void	assign_indexes(t_stack *stk);
+void	sort_small(t_stack *stk);
+void	chunk_sort(t_stack *stk);
 
-void	bs_rotate_b_to_max(t_stack *d);
-void	bs_pull_back_to_a(t_stack *d);
+void	bs_rotate_b_to_max(t_stack *stk);
+void	bs_pull_back_to_a(t_stack *stk);
 
 #endif

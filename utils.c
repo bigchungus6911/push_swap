@@ -12,30 +12,33 @@
 
 #include "push_swap.h"
 
+/* Write an error message string to stderr. */
 static void	put_err(char *s)
 {
 	while (*s)
 		write(2, s++, 1);
 }
 
-void	print_error_and_exit(t_stack *d)
+/* Free both stacks, print "Error" to stderr, and exit with status 1. */
+void	print_error_and_exit(t_stack *stk)
 {
-	if (d->stack_a)
-		free(d->stack_a);
-	if (d->stack_b)
-		free(d->stack_b);
+	if (stk->stack_a)
+		free(stk->stack_a);
+	if (stk->stack_b)
+		free(stk->stack_b);
 	put_err("Error\n");
 	exit(1);
 }
 
-int	is_sorted(t_stack *d)
+/* Return 1 if stack_a is sorted (smallest on top, largest at bottom). */
+int	is_sorted(t_stack *stk)
 {
 	int	i;
 
-	i = d->size_a - 1;
+	i = stk->size_a - 1;
 	while (i > 0)
 	{
-		if (d->stack_a[i] > d->stack_a[i - 1])
+		if (stk->stack_a[i] > stk->stack_a[i - 1])
 			return (0);
 		i--;
 	}
