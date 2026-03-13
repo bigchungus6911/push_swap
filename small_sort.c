@@ -6,7 +6,7 @@
 /*   By: hadrider <hadrider@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 14:55:41 by hadrider          #+#    #+#             */
-/*   Updated: 2026/02/23 14:55:46 by hadrider         ###   ########.fr       */
+/*   Updated: 2026/03/07 09:56:00 by hadrider         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,72 +35,73 @@ static void	sort_3(t_stack *d)
 	else if (top < mid && mid > bot && top < bot)
 	{
 		sa(d);
-		ra(d);
+		ra(d); 
 	}
 	else
 		rra(d);
 }
 
-static int	min_pos(t_stack *d)
+static int	find_min_pos(t_stack *d)
 {
 	int	i;
 	int	pos;
-	int	min;
 
-	min = d->stack_a[0];
 	pos = 0;
 	i = 1;
 	while (i < d->size_a)
 	{
-		if (d->stack_a[i] < min)
-		{
-			min = d->stack_a[i];
+		if (d->stack_a[i] < d->stack_a[pos])
 			pos = i;
-		}
 		i++;
 	}
 	return (pos);
 }
 
-static void	bring_a_pos_to_top(t_stack *d, int pos)
+static void	bring_to_top(t_stack *d, int pos)
 {
-	int	rot_up;
-	int	rot_down;
+	int	forward;
+	int	backward;
+	int	count;
 
-	rot_up = d->size_a - 1 - pos;
-	rot_down = pos + 1;
-	if (rot_up <= rot_down)
-		while (rot_up-- > 0)
+	forward = d->size_a - 1 - pos;
+	backward = pos + 1;
+	if (forward <= backward)
+	{
+		count = forward;
+		while (count > 0)
+		{
 			ra(d);
+			count--;
+		}
+	}
 	else
-		while (rot_down-- > 0)
+	{
+		count = backward;
+		while (count > 0)
+		{
 			rra(d);
-}
-
-static void	push_min_to_b(t_stack *d)
-{
-	int	pos;
-
-	pos = min_pos(d);
-	bring_a_pos_to_top(d, pos);
-	pb(d);
+			count--;
+		}
+	}
 }
 
 void	sort_small(t_stack *d)
 {
+	int	pos;
+
 	if (d->size_a == 2)
 	{
-		if (d->stack_a[d->size_a - 1] > d->stack_a[d->size_a - 2])
+		if (d->stack_a[1] > d->stack_a[0])
 			sa(d);
+		return ;
 	}
-	else if (d->size_a == 3)
-		sort_3(d);
-	else
+	while (d->size_a > 3)
 	{
-		while (d->size_a > 3)
-			push_min_to_b(d);
-		sort_3(d);
-		while (d->size_b)
-			pa(d);
+		pos = find_min_pos(d);
+		bring_to_top(d, pos);
+		pb(d);
 	}
+	sort_3(d);
+	while (d->size_b > 0)
+		pa(d);
 }
